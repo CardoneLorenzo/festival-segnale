@@ -3,12 +3,12 @@
 
 /* Scelte comuni: ogni regola usa var() per richiamarne il valore. */
 :root {
-  --colore-primario: #245c49;
-  --colore-primario-scuro: #173f32;
+  --colore-primario: #a63d1f;
+  --colore-primario-scuro: #702a14;
   --colore-sfondo: #f5f2e9;
   --colore-testo: #202923;
   --font-testo: Arial, Helvetica, sans-serif;
-  --font-titoli: Georgia, "Times New Roman", serif;
+  --font-titoli: Palatino, "Palatino Linotype", "Book Antiqua", Georgia, serif;
 }
 
 * {
@@ -136,7 +136,7 @@ h3 {
 }
 
 .content-section {
-  margin: 2rem 0 3rem;
+  margin: 3rem 0 4rem;
 }
 
 .festival-image {
@@ -159,12 +159,11 @@ h3 {
 .event-grid {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
-  gap: 1.5rem;
+  gap: 2rem;
 }
 
 
 .event-card {
-  margin-bottom: 1.5rem;
   overflow: hidden;
   border: 1px solid #b7c0b7;
   border-radius: 0.75rem;
@@ -178,7 +177,7 @@ h3 {
 }
 
 .event-body {
-  padding: 1.25rem;
+  padding: 1.5rem;
 }
 
 .event-body p:last-child {
@@ -213,5 +212,10 @@ h3 {
 @media (min-width: 600px) {
   .event-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (min-width: 1024px) {
+  .event-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
