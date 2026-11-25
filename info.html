@@ -28,6 +28,36 @@
       <p class="lead">Tutto quello che serve per orientarti tra le sedi del festival.</p>
       <p class="reading-text">Segnale si svolge in tre luoghi, pensati per incontri, laboratori e mostre. Qui trovi cosa si fa in ogni sede e quali appuntamenti ospita.</p>
     </section>
+        <section class="content-section" aria-labelledby="titolo-meteo">
+      <h2 id="titolo-meteo">Meteo a Torino adesso</h2>
+      <p class="reading-text">Condizioni meteo rilevate oggi a Torino (dato attuale, non è la previsione per le date del 12–13 giugno).</p>
+
+      <div class="info-card meteo-box">
+        <p id="stato-meteo" class="reading-text" role="status">Caricamento dati meteo in corso…</p>
+        <noscript>
+          <p class="reading-text">Per visualizzare il meteo attuale è necessario attivare JavaScript nel browser.</p>
+        </noscript>
+
+        <dl id="dati-meteo" class="meteo-list" hidden>
+          <div>
+            <dt>Temperatura</dt>
+            <dd id="meteo-temp">—</dd>
+          </div>
+          <div>
+            <dt>Vento</dt>
+            <dd id="meteo-vento">—</dd>
+          </div>
+          <div>
+            <dt>Rilevazione</dt>
+            <dd id="meteo-ora">—</dd>
+          </div>
+        </dl>
+
+        <p class="meteo-source">
+          Dati meteo: <a href="https://open-meteo.com/" target="_blank" rel="noopener noreferrer">Open-Meteo</a>, licenza <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC BY 4.0</a>.
+        </p>
+      </div>
+    </section>
 
     <section class="content-section" aria-labelledby="titolo-foto">
       <h2 id="titolo-foto">I luoghi in fotografia</h2>
@@ -69,8 +99,7 @@
           <h3>Sede di Mirafiori</h3>
           <p>Cortile Comune nel festival immaginario.</p>
           <ul>
-            <li>Venerdì 12 giugno, 10:00 · Lettere in movimento</li>
-            <li>Sabato 13 giugno, 10:00 · Oggetti in dialogo</li>
+            <li>Venerdì 12 giugno, 17:00 · La città in un manifesto</li>
           </ul>
         </article>
         <article class="info-card">
@@ -86,7 +115,8 @@
           <h3>Sede Centrale</h3>
           <p>Officina Nord nel festival immaginario.</p>
           <ul>
-            <li>Venerdì 12 giugno, 17:00 · La città in un manifesto</li>
+            <li>Venerdì 12 giugno, 10:00 · Lettere in movimento</li>
+            <li>Sabato 13 giugno, 10:00 · Oggetti in dialogo</li>
           </ul>
         </article>
       </div>
@@ -157,6 +187,57 @@
         nextSlideMessage: "Fotografia successiva"
       }
     });
+  </script>
+    <script>
+    (function () {
+      var stato = document.getElementById("stato-meteo");
+      var listaDati = document.getElementById("dati-meteo");
+      var campoTemp = document.getElementById("meteo-temp");
+      var campoVento = document.getElementById("meteo-vento");
+      var campoOra = document.getElementById("meteo-ora");
+
+      var urlApi = "https://api.open-meteo.com/v1/forecast?latitude=45.0703&longitude=7.6869&current=temperature_2m,wind_speed_10m&timezone=Europe%2FRome";
+
+      function formattaOra(isoString) {
+        // Esempio input: "2026-06-12T14:30"
+        if (!isoString || isoString.indexOf("T") === -1) {
+          return isoString || "non disponibile";
+        }
+        var parti = isoString.split("T");
+        var data = parti[0].split("-").reverse().join("/");
+        return "ore " + parti[1] + " del " + data;
+      }
+
+      fetch(urlApi)
+        .then(function (risposta) {
+          if (!risposta.ok) {
+            throw new Error("Risposta HTTP " + risposta.status);
+          }
+          return risposta.json();
+        })
+        .then(function (dati) {
+          if (!dati.current || !dati.current_units) {
+            throw new Error("Formato dati non valido");
+          }
+
+          var temp = dati.current.temperature_2m + " " + dati.current_units.temperature_2m;
+          var vento = dati.current.wind_speed_10m + " " + dati.current_units.wind_speed_10m;
+          var ora = formattaOra(dati.current.time);
+
+          campoTemp.textContent = temp;
+          campoVento.textContent = vento;
+          campoOra.textContent = ora;
+
+          stato.hidden = true;
+          listaDati.hidden = false;
+        })
+        .catch(function () {
+          listaDati.hidden = true;
+          stato.hidden = false;
+          stato.setAttribute("role", "alert");
+          stato.textContent = "Impossibile recuperare i dati meteo in questo momento. Il resto delle informazioni sul festival resta regolarmente consultabile.";
+        });
+    })();
   </script>
 </body>
 </html>

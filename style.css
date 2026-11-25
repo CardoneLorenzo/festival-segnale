@@ -1,8 +1,8 @@
 :root {
-  --colore-primario: #a63d1f;
-  --colore-primario-scuro: #702a14;
-  --colore-sfondo: #f5f2e9;
-  --colore-testo: #202923;
+  --colore-primario: #e62944;
+  --colore-primario-scuro: #9dd4d8;
+  --colore-sfondo: #eff6ec;
+  --colore-testo: #133658;
   --font-testo: Arial, Helvetica, sans-serif;
   --font-titoli: Palatino, "Palatino Linotype", "Book Antiqua", Georgia, serif;
 }
@@ -367,4 +367,36 @@ h3 {
   height: 450px;
   border: none;
   border-radius: 8px;
+}
+/* Sezione Meteo */
+.meteo-box {
+  max-width: 54rem;
+}
+
+.meteo-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+  gap: 1.25rem;
+  margin: 0 0 1.25rem;
+}
+
+.meteo-list dt {
+  color: #46564b;
+  font-size: 0.875rem;
+  font-weight: bold;
+}
+
+.meteo-list dd {
+  margin: 0.25rem 0 0;
+  font-family: var(--font-titoli);
+  font-size: 1.375rem;
+  font-weight: bold;
+}
+
+.meteo-source {
+  margin: 0;
+  padding-top: 0.75rem;
+  border-top: 1px solid #b7c0b7;
+  color: #46564b;
+  font-size: 0.875rem;
 }
